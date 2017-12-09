@@ -1,0 +1,7 @@
+---
+# BasedOnStyle:  Google
+BreakBeforeBraces: Allman
+ColumnLimit:     150
+IndentWidth:     4
+TabWidth:        4
+...
