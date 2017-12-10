@@ -73,12 +73,14 @@
     <Allegro_AddonTTF>
     </Allegro_AddonTTF>
     <Allegro_AddonFont>true</Allegro_AddonFont>
+    <Allegro_AddonPrimitives>true</Allegro_AddonPrimitives>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Allegro_LibraryType>DynamicDebug</Allegro_LibraryType>
     <Allegro_AddonTTF>
     </Allegro_AddonTTF>
     <Allegro_AddonFont>true</Allegro_AddonFont>
+    <Allegro_AddonPrimitives>true</Allegro_AddonPrimitives>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
