@@ -1,8 +1,11 @@
 ---
 # BasedOnStyle:  Google
 BreakBeforeBraces: Allman
+BreakConstructorInitializersBeforeComma: true
 ColumnLimit:     150
 IndentCaseLabels: true
 IndentWidth:     4
+NamespaceIndentation: All
+PointerAlignment: Left
 TabWidth:        4
 ...
