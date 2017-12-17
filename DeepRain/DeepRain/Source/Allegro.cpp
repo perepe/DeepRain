@@ -3,6 +3,11 @@
 #include <allegro5/allegro_primitives.h>
 #include <stdio.h>
 
+const ALLEGRO_COLOR Allegro::kBlack{0, 0, 0, 255};
+const ALLEGRO_COLOR Allegro::kWhite{255, 255, 255, 255};
+const ALLEGRO_COLOR Allegro::kRed{0.8f, 0.2f, 0.2f, 1.0f};
+const ALLEGRO_COLOR Allegro::kBlue{0.2f, 0.2f, 0.8f, 1.0f};
+
 bool Allegro::init(const V2& screenSize)
 {
     bool ok = al_init();
@@ -18,7 +23,7 @@ bool Allegro::init(const V2& screenSize)
     al_register_event_source(_eventQueue, al_get_display_event_source(_display));
     _font = al_create_builtin_font();
 
-    al_clear_to_color(al_map_rgb(0, 0, 0));
+    al_clear_to_color(kBlack);
     al_flip_display();
 
     return ok;

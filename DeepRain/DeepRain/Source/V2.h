@@ -2,6 +2,11 @@
 
 #include <math.h>
 
+struct c_V2
+{
+    int x, y;
+};
+
 struct V2
 {
     float x, y;
@@ -11,6 +16,9 @@ struct V2
         : x(_x)
         , y(_y){};
     V2(const V2& v)
+        : x(v.x)
+        , y(v.y){};
+    V2(const c_V2& v)
         : x(v.x)
         , y(v.y){};
 

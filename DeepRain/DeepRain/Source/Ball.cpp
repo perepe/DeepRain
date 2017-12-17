@@ -1,7 +1,7 @@
 #include "Ball.h"
 
+#include "Allegro.h"
 #include "Pong.h"
-#include <allegro5/allegro_primitives.h>
 
 void Ball::update(const Rect& field, const V2& leftPaddlePos, const V2& rightPaddlePos, Paddle::Action leftAction, Paddle::Action rightAction,
                   float dt)
@@ -10,7 +10,7 @@ void Ball::update(const Rect& field, const V2& leftPaddlePos, const V2& rightPad
 
     if (waitingForServe)
     {
-        bool ballInLeftSide = _pos.x < field.width() * 0.5f;
+        bool ballInLeftSide = _pos.x - field._min.x < field.width() * 0.5f;
         bool leftServe = ballInLeftSide && leftAction == Paddle::Action::Serve;
         bool rightServe = !ballInLeftSide && rightAction == Paddle::Action::Serve;
 
@@ -18,6 +18,7 @@ void Ball::update(const Rect& field, const V2& leftPaddlePos, const V2& rightPad
 
         if (!leftServe && !rightServe)
         {
+            _stream.add(_pos.y);
             return;
         }
 
@@ -33,11 +34,14 @@ void Ball::update(const Rect& field, const V2& leftPaddlePos, const V2& rightPad
     {
         onOut(leftOut);
     }
+
+    _stream.add(_pos.y);
 }
 
-void Ball::draw()
+void Ball::draw(Allegro* allegro)
 {
-    al_draw_filled_rectangle(_pos.x - kHalfWidth, _pos.y - kHalfWidth, _pos.x + kHalfWidth, _pos.y + kHalfWidth, {0.8f, 0.2f, 0.2f, 1.0f});
+    Allegro::drawFilledRect(Rect(V2(_pos.x - kHalfWidth, _pos.y - kHalfWidth), V2(_pos.x + kHalfWidth, _pos.y + kHalfWidth)), Allegro::kRed);
+    _stream.draw(allegro);
 }
 
 void Ball::serve(bool left)

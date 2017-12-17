@@ -6,12 +6,19 @@
 
 int main(int argc, char** argv)
 {
-    V2 screenSize(640.0f, 480.0f);
+    constexpr c_V2 screenSize{800.0f, 600.0f};
+    constexpr c_V2 fieldCenter{screenSize.x * 0.5f, screenSize.y * 0.75f};
+    constexpr c_V2 fieldSize{400.0f, 300.0f};
+
     Allegro allegro;
     bool exit = !allegro.init(screenSize);
 
-    Rect field(V2(0.0f, 0.0f), screenSize);
-    Pong pong(&allegro, field);
+    constexpr c_V2 fieldHalfSize{fieldSize.x * 0.5f, fieldSize.y * 0.5f};
+    constexpr c_V2 fieldMin{fieldCenter.x - fieldHalfSize.x, fieldCenter.y - fieldHalfSize.y};
+    constexpr c_V2 fieldMax{fieldCenter.x + fieldHalfSize.x, fieldCenter.y + fieldHalfSize.y};
+
+    Rect field(fieldMin, fieldMax);
+    Pong pong(field);
 
     clock_t lastT, t = 0.0, startT = clock();
 
@@ -25,9 +32,9 @@ int main(int argc, char** argv)
         exit = allegro.handleEvents();
         pong.update(dt);
 
-        allegro.startFrame();
-        pong.draw();
-        allegro.endFrame();
+        Allegro::startFrame();
+        pong.draw(&allegro);
+        Allegro::endFrame();
     }
 
     allegro.destroy();

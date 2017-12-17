@@ -1,6 +1,6 @@
 #include "Paddle.h"
 
-#include <allegro5/allegro_primitives.h>
+#include "Allegro.h"
 
 void Paddle::move(bool up, const Rect& field, float dt)
 {
@@ -34,7 +34,7 @@ void Paddle::update(const Rect& field, Action action, float dt)
 
 void Paddle::draw()
 {
-    al_draw_filled_rectangle(_pos.x - kHalfWidth, _pos.y - kHalfHeight, _pos.x + kHalfWidth, _pos.y + kHalfHeight, {0.2f, 0.2f, 0.8f, 1.0f});
+    Allegro::drawFilledRect(Rect(V2(_pos.x - kHalfWidth, _pos.y - kHalfHeight), V2(_pos.x + kHalfWidth, _pos.y + kHalfHeight)), Allegro::kBlue);
 }
 
 void Paddle::onPointScored(bool me)

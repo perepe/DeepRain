@@ -18,7 +18,7 @@ class Paddle
     static constexpr float kHeight = 100;
     static constexpr float kHalfHeight = kHeight * 0.5f;
 
-    static constexpr float kSpeed = 200.0f;
+    static constexpr float kSpeed = 140.0f;
 
   private:
     int _score = 0;
@@ -35,4 +35,5 @@ class Paddle
     void onPointScored(bool me);
 
     const V2& getPos() const { return _pos; };
+    int getScore() const { return _score; };
 };

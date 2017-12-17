@@ -8,16 +8,15 @@ class Allegro;
 
 class Pong
 {
-    Allegro* _allegro = nullptr;
     Rect _field;
     Paddle _ai;
     Paddle _dr;
     Ball _ball;
 
   public:
-    Pong::Pong(Allegro* allegro, const Rect& field);
+    Pong::Pong(const Rect& field);
 
     void update(float dt);
-    void draw();
+    void draw(Allegro* allegro);
     void onOut(bool left);
 };
