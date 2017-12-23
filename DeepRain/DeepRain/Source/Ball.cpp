@@ -10,7 +10,7 @@ void Ball::update(const Rect& field, const V2& leftPaddlePos, const V2& rightPad
 
     if (waitingForServe)
     {
-        bool ballInLeftSide = _pos.x - field._min.x < field.width() * 0.5f;
+        bool ballInLeftSide = _pos.x - field.min.x < field.width() * 0.5f;
         bool leftServe = ballInLeftSide && leftAction == Paddle::Action::Serve;
         bool rightServe = !ballInLeftSide && rightAction == Paddle::Action::Serve;
 
@@ -69,7 +69,7 @@ void Ball::move(const Rect& field, const V2& leftPaddlePos, const V2& rightPaddl
 
 V2 Ball::calculatePositionOverflow(const V2& pos, const Rect& field, const V2& leftPaddlePos, const V2& rightPaddlePos)
 {
-    float topOverflow = field._min.y + kHalfWidth - pos.y;
+    float topOverflow = field.min.y + kHalfWidth - pos.y;
 
     if (topOverflow > 0)
     {
@@ -78,7 +78,7 @@ V2 Ball::calculatePositionOverflow(const V2& pos, const Rect& field, const V2& l
         return overflow + calculatePositionOverflow(correctedPos, field, leftPaddlePos, rightPaddlePos);
     }
 
-    float bottomOverflow = pos.y + kHalfWidth - field._max.y;
+    float bottomOverflow = pos.y + kHalfWidth - field.max.y;
 
     if (bottomOverflow > 0)
     {

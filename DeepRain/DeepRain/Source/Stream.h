@@ -8,13 +8,16 @@ class Allegro;
 
 class Stream
 {
-    static constexpr int kStreamMaxSize = 3000;
+    static constexpr int kNumLevels = 13;
+    static constexpr int kStreamDataSize = 1 << kNumLevels - 1;
+    static constexpr int kFirstLevelSize = kStreamDataSize >> 1;
+    static constexpr int kMaxValues = (kFirstLevelSize * kStreamDataSize) << 1;
     static constexpr int kNameMaxSize = 20;
     static constexpr int kLineWidth = 1;
 
-    float _data[kStreamMaxSize];
+    float _data[kStreamDataSize];
     int _size = 0;
-    int _last = kStreamMaxSize;
+    int _last = 0;
     char _name[kNameMaxSize] = "";
     const Rect _renderArea;
     const float _scaleX = 0.0f;
@@ -23,8 +26,8 @@ class Stream
     Stream(const char name[kNameMaxSize], const Rect& renderArea)
         : _renderArea(renderArea)
         , _size(0)
-        , _last(kStreamMaxSize)
-        , _scaleX(_renderArea.width() / (kStreamMaxSize - 1))
+        , _last(0)
+        , _scaleX(_renderArea.width() / (kFirstLevelSize - 1))
     {
         strcpy_s(_name, name);
     };

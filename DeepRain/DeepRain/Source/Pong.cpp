@@ -5,9 +5,9 @@
 
 Pong::Pong(const Rect& field)
     : _field(field)
-    , _ai(field._min + V2(Paddle::kHalfWidth, field.height() * 0.5f))
-    , _dr(field._max - V2(Paddle::kHalfWidth, field.height() * 0.5f))
-    , _ball(field._min + V2(Paddle::kWidth + Ball::kHalfWidth, field.height() * 0.5f), this){};
+    , _ai(field.min + V2(Paddle::kHalfWidth, field.height() * 0.5f))
+    , _dr(field.max - V2(Paddle::kHalfWidth, field.height() * 0.5f))
+    , _ball(field.min + V2(Paddle::kWidth + Ball::kHalfWidth, field.height() * 0.5f), this){};
 
 void Pong::update(float dt)
 {
@@ -25,7 +25,7 @@ void Pong::draw(Allegro* allegro)
     _dr.draw();
     _ball.draw(allegro);
 
-    allegro->print(_field._min + V2(_field.width() * 0.5f, 20.0f), "%d - %d", _ai.getScore(), _dr.getScore());
+    allegro->print(_field.min + V2(_field.width() * 0.5f, 20.0f), "%d - %d", _ai.getScore(), _dr.getScore());
     allegro->drawRect(_field);
 }
 

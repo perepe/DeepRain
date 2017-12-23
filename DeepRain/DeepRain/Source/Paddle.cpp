@@ -4,7 +4,7 @@
 
 void Paddle::move(bool up, const Rect& field, float dt)
 {
-    float limit = up ? field._min.y : field._max.y;
+    float limit = up ? field.min.y : field.max.y;
     float distToLimit = up ? _pos.y - limit - kHalfHeight : limit - _pos.y - kHalfHeight;
     float direction = up ? -1.0f : 1.0f;
 

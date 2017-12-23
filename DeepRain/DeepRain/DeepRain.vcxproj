@@ -142,8 +142,8 @@
     <ClInclude Include="Source\Pong.h" />
     <ClInclude Include="Source\Allegro.h" />
     <ClInclude Include="Source\Rect.h" />
-    <ClInclude Include="Source\V2.h" />
     <ClInclude Include="Source\Stream.h" />
+    <ClInclude Include="Source\V2.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

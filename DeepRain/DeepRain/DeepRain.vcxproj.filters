@@ -62,10 +62,10 @@
     <ClInclude Include="Source\Paddle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Stream.h">
+    <ClInclude Include="Source\Line.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Line.h">
+    <ClInclude Include="Source\Stream.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

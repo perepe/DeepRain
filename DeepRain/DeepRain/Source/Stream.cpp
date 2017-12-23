@@ -5,50 +5,80 @@
 
 void Stream::add(float value)
 {
-    if (_size < kStreamMaxSize)
+    if (_size < kMaxValues)
     {
         ++_size;
     }
 
-    _last = (_last - 1 < 0 ? kStreamMaxSize : _last) - 1;
-    _data[_last] = value;
+    if (_last == 3)
+    {
+        int a = 0;
+    }
+
+    int start = 0;
+
+    for (int i = 0; i < kNumLevels; ++i)
+    {
+        int amount = kFirstLevelSize >> i;
+        int size = kFirstLevelSize << i;
+        int idx = (_last % size);
+        int div = (i << 1);
+        int numNums = 1 << div;
+        int partialIdx = amount - 1 - (idx >> div);
+        _data[start + partialIdx] = _last % numNums == 0 ? value / (float)numNums : _data[start + partialIdx] + value / (float)numNums;
+        start += kFirstLevelSize >> i;
+    }
+
+    _last = _last + 1 >= kMaxValues ? 0 : _last + 1;
 }
 
 void Stream::draw(Allegro* allegro) const
 {
-    allegro->print(_renderArea._min + V2(50.0f, 20.0f), "%s:", _name);
+    allegro->print(_renderArea.min + V2(50.0f, 20.0f), "%s:", _name);
 
     if (_size == 0)
     {
         return;
     }
 
-    float kMinValue = 99999999.0f;
-    float kMaxValue = -99999999.0f;
+    int start = 0;
+    float kOffsetY = 50.0f;
 
-    for (int i = kStreamMaxSize - 1; i > kStreamMaxSize - 1 - _size; --i)
+    for (int i = 0; i < kNumLevels; ++i)
     {
-        kMinValue = kMinValue < _data[i] ? kMinValue : _data[i];
-        kMaxValue = kMaxValue > _data[i] ? kMaxValue : _data[i];
-    }
+        float kMinValue = 300.0f;
+        float kMaxValue = 600.0f;
+        int amount = kFirstLevelSize >> i;
+        int size = kFirstLevelSize << i;
+        int idx = ((_last - 1) % size);
+        int div = (i << 1);
+        int partialIdx = amount - 1 - (idx >> div);
+        int filledSize = (_size >> div) < amount ? _size >> div : amount;
+        int end = start + amount;
+        float scaleX = _renderArea.width() / (amount - 1);
+        float offsetY = i * kOffsetY;
 
-    const float kScaleY = _renderArea.height() / (kMaxValue - kMinValue);
+        const float kScaleY = _renderArea.height() / (kMaxValue - kMinValue);
 
-    Line line;
-    line._end = V2(_renderArea._min.x + (_size - 1) * _scaleX, _renderArea._max.y - (_data[_last] - kMinValue) * kScaleY);
+        Line line;
+        line.end = V2(_renderArea.min.x + (filledSize - 1) * scaleX, _renderArea.max.y + offsetY - (_data[start + partialIdx] - kMinValue) * kScaleY);
+        Allegro::drawFilledCircle(line.end);
 
-    if (_size == 1)
-    {
-        line._start = line._end;
-        Allegro::drawLine(line);
-        return;
-    }
+        if (filledSize == 1)
+        {
+            line.start = line.end;
+            Allegro::drawLine(line);
+            continue;
+        }
 
-    for (int i = 1; i < _size; ++i)
-    {
-        line._start = line._end;
-        line._end =
-            V2(_renderArea._min.x + (_size - 1 - i) * _scaleX, _renderArea._max.y - (_data[(_last + i) % kStreamMaxSize] - kMinValue) * kScaleY);
-        Allegro::drawLine(line);
+        for (int j = 1; j < filledSize; ++j)
+        {
+            line.start = line.end;
+            line.end = V2(_renderArea.min.x + (filledSize - 1 - j) * scaleX,
+                          _renderArea.max.y + offsetY - (_data[start + ((partialIdx + j) % amount)] - kMinValue) * kScaleY);
+            Allegro::drawLine(line);
+        }
+
+        start += amount;
     }
 }
