@@ -2,7 +2,8 @@
 # BasedOnStyle:  Google
 BreakBeforeBraces: Allman
 BreakConstructorInitializersBeforeComma: true
-ColumnLimit:     150
+ColumnLimit:     1150
+FixNamespaceComments: false
 IndentCaseLabels: true
 IndentWidth:     4
 NamespaceIndentation: All

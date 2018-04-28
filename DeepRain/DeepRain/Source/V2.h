@@ -4,7 +4,7 @@
 
 struct c_V2
 {
-    int x, y;
+    float x, y;
 };
 
 struct V2

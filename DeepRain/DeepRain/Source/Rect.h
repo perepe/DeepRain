@@ -7,6 +7,7 @@ struct Rect
     V2 min;
     V2 max;
 
+    Rect() = default;
     Rect(V2 _min, V2 _max)
         : min(_min)
         , max(_max){};

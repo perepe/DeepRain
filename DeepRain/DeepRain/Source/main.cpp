@@ -27,10 +27,12 @@ int main(int argc, char** argv)
         lastT = t;
         t = clock() - startT;
         float dt = (float)(t - lastT) / CLOCKS_PER_SEC;
-        // printf("fps: %.3f, t: %.3f dt: %.3f\n", 1.0f / dt, (float)t, dt);
+        printf("fps: %.3f, t: %.3f dt: %.3f\n", 1.0f / dt, (float)t, dt);
 
         exit = allegro.handleEvents();
         pong.update(dt);
+
+        // Sleep(128);
 
         Allegro::startFrame();
         pong.draw(&allegro);

@@ -132,18 +132,28 @@
     <ClCompile Include="Source\Pong.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\Allegro.cpp" />
-    <ClCompile Include="Source\Stream.cpp" />
+    <ClCompile Include="Source\SampleComp.cpp" />
+    <ClCompile Include="Source\StreamComp.cpp" />
+    <ClCompile Include="Source\TheoryComp.cpp" />
+    <ClCompile Include="Source\TheoryNode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Ball.h" />
     <ClInclude Include="Source\AI.h" />
+    <ClInclude Include="Source\Component.h" />
+    <ClInclude Include="Source\Drawer.h" />
     <ClInclude Include="Source\Line.h" />
     <ClInclude Include="Source\Paddle.h" />
     <ClInclude Include="Source\Pong.h" />
     <ClInclude Include="Source\Allegro.h" />
     <ClInclude Include="Source\Rect.h" />
-    <ClInclude Include="Source\Stream.h" />
+    <ClInclude Include="Source\SampleComp.fwd.h" />
+    <ClInclude Include="Source\SampleComp.h" />
+    <ClInclude Include="Source\StreamComp.fwd.h" />
+    <ClInclude Include="Source\StreamComp.h" />
+    <ClInclude Include="Source\TheoryNode.h" />
     <ClInclude Include="Source\V2.h" />
+    <ClInclude Include="Source\TheoryComp.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

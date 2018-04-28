@@ -18,7 +18,8 @@ void Ball::update(const Rect& field, const V2& leftPaddlePos, const V2& rightPad
 
         if (!leftServe && !rightServe)
         {
-            _stream.add(_pos.y);
+            Drawer::getComponent<StreamComp>(_streamXH).add(_pos.x);
+            Drawer::getComponent<StreamComp>(_streamYH).add(_pos.y);
             return;
         }
 
@@ -35,13 +36,15 @@ void Ball::update(const Rect& field, const V2& leftPaddlePos, const V2& rightPad
         onOut(leftOut);
     }
 
-    _stream.add(_pos.y);
+    Drawer::getComponent<StreamComp>(_streamXH).add(_pos.x);
+    Drawer::getComponent<StreamComp>(_streamYH).add(_pos.y);
 }
 
 void Ball::draw(Allegro* allegro)
 {
     Allegro::drawFilledRect(Rect(V2(_pos.x - kHalfWidth, _pos.y - kHalfWidth), V2(_pos.x + kHalfWidth, _pos.y + kHalfWidth)), Allegro::kRed);
-    _stream.draw(allegro);
+    Drawer::getComponent<StreamComp>(_streamXH).draw(allegro);
+    Drawer::getComponent<StreamComp>(_streamYH).draw(allegro);
 }
 
 void Ball::serve(bool left)

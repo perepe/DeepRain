@@ -1,5 +1,7 @@
 #include "AI.h"
 
+#include <stdlib.h>
+
 namespace AI
 {
     Paddle::Action selectMove(const Rect& field, const V2& ballPos, const V2& ballVelocity, const V2& paddlePos)
@@ -23,4 +25,6 @@ namespace AI
 
         return Paddle::Action::Nothing;
     }
+
+    Paddle::Action randomMove() { return (Paddle::Action)(rand() % 4); }
 } // namespace AI

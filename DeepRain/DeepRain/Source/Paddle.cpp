@@ -10,6 +10,7 @@ void Paddle::move(bool up, const Rect& field, float dt)
 
     float moveDist = kSpeed * dt;
     _pos.y += direction * (distToLimit > moveDist ? moveDist : distToLimit);
+    Drawer::getComponent<StreamComp>(_streamH).add(_pos.y);
 }
 
 void Paddle::update(const Rect& field, Action action, float dt)
@@ -32,9 +33,12 @@ void Paddle::update(const Rect& field, Action action, float dt)
     }
 }
 
-void Paddle::draw()
+void Paddle::draw(Allegro* allegro, bool drawStream)
 {
     Allegro::drawFilledRect(Rect(V2(_pos.x - kHalfWidth, _pos.y - kHalfHeight), V2(_pos.x + kHalfWidth, _pos.y + kHalfHeight)), Allegro::kBlue);
+
+    if (drawStream)
+        Drawer::getComponent<StreamComp>(_streamH).draw(allegro);
 }
 
 void Paddle::onPointScored(bool me)
