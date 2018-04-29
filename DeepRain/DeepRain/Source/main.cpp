@@ -1,5 +1,6 @@
 #include "Allegro.h"
 #include "Pong.h"
+#include "StreamComp.fwd.h"
 #include <stdio.h>
 #include <time.h>
 #include <windows.h>
@@ -30,6 +31,7 @@ int main(int argc, char** argv)
         printf("fps: %.3f, t: %.3f dt: %.3f\n", 1.0f / dt, (float)t, dt);
 
         exit = allegro.handleEvents();
+        StreamComp::add();
         pong.update(dt);
 
         // Sleep(128);

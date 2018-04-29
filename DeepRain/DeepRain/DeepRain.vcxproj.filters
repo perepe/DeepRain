@@ -36,9 +36,6 @@
     <ClCompile Include="Source\Paddle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\TheoryNode.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\SampleComp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -46,6 +43,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\TheoryComp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\TheoryNodeComp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -80,9 +80,6 @@
     <ClInclude Include="Source\Component.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\TheoryNode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\SampleComp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -92,10 +89,19 @@
     <ClInclude Include="Source\StreamComp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\TheoryComp.h">
+    <ClInclude Include="Source\StreamComp.fwd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\StreamComp.fwd.h">
+    <ClInclude Include="Source\TheoryComp.fwd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\TheoryNodeComp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\TheoryNodeComp.fwd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\TheoryComp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

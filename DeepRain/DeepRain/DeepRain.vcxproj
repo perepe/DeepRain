@@ -135,7 +135,7 @@
     <ClCompile Include="Source\SampleComp.cpp" />
     <ClCompile Include="Source\StreamComp.cpp" />
     <ClCompile Include="Source\TheoryComp.cpp" />
-    <ClCompile Include="Source\TheoryNode.cpp" />
+    <ClCompile Include="Source\TheoryNodeComp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Ball.h" />
@@ -151,9 +151,11 @@
     <ClInclude Include="Source\SampleComp.h" />
     <ClInclude Include="Source\StreamComp.fwd.h" />
     <ClInclude Include="Source\StreamComp.h" />
-    <ClInclude Include="Source\TheoryNode.h" />
-    <ClInclude Include="Source\V2.h" />
+    <ClInclude Include="Source\TheoryComp.fwd.h" />
     <ClInclude Include="Source\TheoryComp.h" />
+    <ClInclude Include="Source\TheoryNodeComp.fwd.h" />
+    <ClInclude Include="Source\TheoryNodeComp.h" />
+    <ClInclude Include="Source\V2.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

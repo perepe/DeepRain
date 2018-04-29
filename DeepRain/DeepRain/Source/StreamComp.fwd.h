@@ -19,8 +19,8 @@ struct StreamComp
     static constexpr unsigned char kLineWidth = 1;
 
     float _data[kStreamDataSize];
-    unsigned int _timespan = 0;
-    unsigned int _lastInv = 0;
+    static unsigned int _timespan;
+    static unsigned int _lastInv;
     char _name[kNameMaxSize] = "";
     Rect _renderArea;
     float _scaleX = 0.0f;
@@ -36,11 +36,11 @@ struct StreamComp
             ;
         return startPoint;
     };
-    inline unsigned int getLevelLastTimeInv(const unsigned char level) const { return _lastInv % getLevelTimespan(level); };
-    inline unsigned int getLevelLastPointInv(const unsigned char level) const { return getLevelLastTimeInv(level) >> getLevelTimeFactor(level); };
-    inline unsigned int getLevelNextPointLevelIdx(const unsigned char level) const { return getLevelPoints(level) - 1 - getLevelLastPointInv(level); };
-    inline unsigned int getLevelNextPointIdx(const unsigned char level, const unsigned int levelStartPoint) const { return levelStartPoint + getLevelNextPointLevelIdx(level); };
-    inline unsigned int getLevelFilledPoints(const unsigned char level) const
+    static inline unsigned int getLevelLastTimeInv(const unsigned char level) { return _lastInv % getLevelTimespan(level); };
+    static inline unsigned int getLevelLastPointInv(const unsigned char level) { return getLevelLastTimeInv(level) >> getLevelTimeFactor(level); };
+    static inline unsigned int getLevelNextPointLevelIdx(const unsigned char level) { return getLevelPoints(level) - 1 - getLevelLastPointInv(level); };
+    static inline unsigned int getLevelNextPointIdx(const unsigned char level, const unsigned int levelStartPoint) { return levelStartPoint + getLevelNextPointLevelIdx(level); };
+    static inline unsigned int getLevelFilledPoints(const unsigned char level)
     {
         const unsigned int levelPoints = getLevelPoints(level);
         const unsigned int levelTimeFactor = getLevelTimeFactor(level);
@@ -50,11 +50,11 @@ struct StreamComp
     void init(const char name[kNameMaxSize], const Rect& renderArea)
     {
         _renderArea = renderArea;
-        _timespan = 0;
-        _lastInv = 0;
         _scaleX = _renderArea.width() / (kFirstLevelSize - 1);
         strcpy_s(_name, name);
     };
+
+    static void add();
 
     void add(float value);
     void draw(Allegro* allegro) const;

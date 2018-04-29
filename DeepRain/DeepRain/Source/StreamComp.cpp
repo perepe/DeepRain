@@ -4,13 +4,21 @@
 #include "Line.h"
 #include <stdlib.h>
 
-void StreamComp::add(float value)
+unsigned int StreamComp::_timespan = 0;
+unsigned int StreamComp::_lastInv = 0;
+
+void StreamComp::add()
 {
     if (_timespan < kMaxTimespan)
     {
         ++_timespan;
     }
 
+    _lastInv = _lastInv + 1 >= kMaxTimespan ? 0 : _lastInv + 1;
+}
+
+void StreamComp::add(float value)
+{
     unsigned int levelStartPoint = 0;
 
     for (unsigned char level = 0; level < kNumLevels; ++level)
@@ -24,8 +32,6 @@ void StreamComp::add(float value)
         _data[levelNextPointIdx] = isFirstContributionToPoint ? valueContributionToPoint : _data[levelNextPointIdx] + valueContributionToPoint;
         levelStartPoint += levelPoints;
     }
-
-    _lastInv = _lastInv + 1 >= kMaxTimespan ? 0 : _lastInv + 1;
 }
 
 void StreamComp::draw(Allegro* allegro) const
