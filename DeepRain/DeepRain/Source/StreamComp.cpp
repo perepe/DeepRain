@@ -24,13 +24,52 @@ void StreamComp::add(float value)
     for (unsigned char level = 0; level < kNumLevels; ++level)
     {
         const unsigned int levelPoints = getLevelPoints(level);
-        const unsigned int pointTimespan = getPointTimespan(level);
         const unsigned int levelNextPointIdx = getLevelNextPointIdx(level, levelStartPoint);
-
+        const unsigned int pointTimespan = getPointTimespan(level);
         const float valueContributionToPoint = value / (float)pointTimespan;
-        const bool isFirstContributionToPoint = _lastInv % pointTimespan == 0;
+        const unsigned int contributionIdx = _lastInv % pointTimespan;
+        const bool isFirstContributionToPoint = contributionIdx == 0;
+        const bool isLastContributionToPoint = contributionIdx == pointTimespan - 1;
+
         _data[levelNextPointIdx] = isFirstContributionToPoint ? valueContributionToPoint : _data[levelNextPointIdx] + valueContributionToPoint;
+
+        if (isLastContributionToPoint)
+        {
+            updateDerivative(levelNextPointIdx, level, levelStartPoint, levelPoints);
+        }
+
         levelStartPoint += levelPoints;
+    }
+}
+
+void StreamComp::updateDerivative(unsigned int idx, unsigned char level, unsigned int levelStart, unsigned int levelPoints)
+{
+    const unsigned int filledPoints = getLevelFilledPoints(level);
+
+    if (filledPoints <= 1)
+    {
+        return;
+    }
+
+    const unsigned char numDerivatives = kNumLevels - level - 1;
+    const unsigned int levelIdx = idx - levelStart;
+    unsigned int levelDerivativeNextPointIdx = levelIdx >> 1;
+
+    _derivatives[levelStart + levelDerivativeNextPointIdx] = _data[idx] - _data[levelStart + ((levelIdx + 1) % levelPoints)];
+
+    unsigned int derivativeStart = 0;
+    unsigned int derivativePoints = levelPoints >> 1;
+
+    for (unsigned int derivativeIdx = 1; derivativeIdx < numDerivatives; ++derivativeIdx)
+    {
+        float derivativeValue = _derivatives[levelStart + derivativeStart + levelDerivativeNextPointIdx] - _derivatives[levelStart + derivativeStart + ((levelDerivativeNextPointIdx + 1) % derivativePoints)];
+
+        derivativeStart += derivativePoints;
+        derivativePoints >>= 1;
+
+        levelDerivativeNextPointIdx = levelIdx >> (derivativeIdx + 1);
+
+        _derivatives[levelStart + derivativeStart + levelDerivativeNextPointIdx] = derivativeValue;
     }
 }
 

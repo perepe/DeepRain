@@ -10,6 +10,7 @@ struct TheoryNodeComp
     Handle _nextNodeH;
     Handle _theoryH;
     Handle _causeStreamH;
+    unsigned char _derivative = 0;
     float _factor = 1.0f;
     float _avgError = 0.0f;
 

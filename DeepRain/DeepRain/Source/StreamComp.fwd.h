@@ -19,6 +19,7 @@ struct StreamComp
     static constexpr unsigned char kLineWidth = 1;
 
     float _data[kStreamDataSize];
+    float _derivatives[kStreamDataSize];
     static unsigned int _timespan;
     static unsigned int _lastInv;
     char _name[kNameMaxSize] = "";
@@ -57,5 +58,6 @@ struct StreamComp
     static void add();
 
     void add(float value);
+    void updateDerivative(unsigned int idx, unsigned char level, unsigned int levelStart, unsigned int levelPoints);
     void draw(Allegro* allegro) const;
 };
