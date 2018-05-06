@@ -36,9 +36,6 @@
     <ClCompile Include="Source\Paddle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\SampleComp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\StreamComp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -78,12 +75,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Component.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\SampleComp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\SampleComp.fwd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\StreamComp.h">

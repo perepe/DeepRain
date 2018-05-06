@@ -3,8 +3,7 @@
 #include "Allegro.h"
 #include "Pong.h"
 
-void Ball::update(const Rect& field, const V2& leftPaddlePos, const V2& rightPaddlePos, Paddle::Action leftAction, Paddle::Action rightAction,
-                  float dt)
+void Ball::update(const Rect& field, const V2& leftPaddlePos, const V2& rightPaddlePos, Paddle::Action leftAction, Paddle::Action rightAction, float dt)
 {
     bool waitingForServe = _vel.x == 0.0f;
 
@@ -44,7 +43,7 @@ void Ball::draw(Allegro* allegro)
 {
     Allegro::drawFilledRect(Rect(V2(_pos.x - kHalfWidth, _pos.y - kHalfWidth), V2(_pos.x + kHalfWidth, _pos.y + kHalfWidth)), Allegro::kRed);
     Drawer::getComponent<StreamComp>(_streamXH).draw(allegro);
-    Drawer::getComponent<StreamComp>(_streamYH).draw(allegro);
+    // Drawer::getComponent<StreamComp>(_streamYH).draw(allegro);
 }
 
 void Ball::serve(bool left)

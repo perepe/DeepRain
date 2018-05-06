@@ -60,4 +60,5 @@ struct StreamComp
     void add(float value);
     void updateDerivative(unsigned int idx, unsigned char level, unsigned int levelStart, unsigned int levelPoints);
     void draw(Allegro* allegro) const;
+    void drawDerivative(Allegro* allegro) const;
 };

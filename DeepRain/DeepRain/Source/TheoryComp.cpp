@@ -5,7 +5,7 @@
 #include "TheoryNodeComp.fwd.h"
 #include <stdlib.h>
 
-void TheoryComp::update(unsigned int idxs[SampleComp::kNumPoints], int level)
+void TheoryComp::update(unsigned int idxs[9], int level)
 {
     float error = 0.0f;
 
@@ -20,5 +20,5 @@ void TheoryComp::update(unsigned int idxs[SampleComp::kNumPoints], int level)
 
 namespace Theory
 {
-    void create(unsigned int idxs[SampleComp::kNumPoints], unsigned char level) {}
+    void create(unsigned int idxs[9], unsigned char level) {}
 }

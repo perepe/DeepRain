@@ -4,5 +4,5 @@
 
 namespace TheoryNode
 {
-    float create(Handle& handle, unsigned int idxs[SampleComp::kNumPoints], unsigned char level);
+    float create(Handle& handle, unsigned int idxs[9], unsigned char level);
 };

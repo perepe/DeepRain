@@ -117,7 +117,56 @@ void StreamComp::draw(Allegro* allegro) const
 
         start += levelPoints;
     }
+
+    drawDerivative(allegro);
 }
+
+void StreamComp::drawDerivative(Allegro* allegro) const
+{
+    allegro->print(_renderArea.min + V2(50.0f, 20.0f), "%s:", _name);
+
+    if (_timespan == 0)
+    {
+        return;
+    }
+
+    int start = 0;
+    float kOffsetY = 50.0f;
+
+    for (int level = 0; level < 1; ++level)
+    {
+        const unsigned int levelPoints = getLevelPoints(level) >> 1;
+        const unsigned int levelNextPointLevelIdx = getLevelNextPointLevelIdx(level) >> 1;
+        const unsigned int filledPoints = getLevelFilledPoints(level) >> 1;
+
+        const float kMinValue = -5.0f;
+        const float kMaxValue = 5.0f;
+        const float scaleX = _renderArea.width() / (levelPoints - 1);
+        const float offsetY = level * kOffsetY + 200;
+        const float kScaleY = 2.f * _renderArea.height() / (kMaxValue - kMinValue);
+
+        Line line;
+        line.end = V2(_renderArea.min.x + (filledPoints - 1) * scaleX, _renderArea.max.y + offsetY - (_derivatives[start + levelNextPointLevelIdx] - kMinValue) * kScaleY);
+        Allegro::drawFilledCircle(line.end);
+
+        if (filledPoints == 1)
+        {
+            line.start = line.end;
+            Allegro::drawLine(line);
+            continue;
+        }
+
+        for (int j = 1; j < filledPoints; ++j)
+        {
+            line.start = line.end;
+            line.end = V2(_renderArea.min.x + (filledPoints - 1 - j) * scaleX, _renderArea.max.y + offsetY - (_derivatives[start + ((levelNextPointLevelIdx + j) % levelPoints)] - kMinValue) * kScaleY);
+            Allegro::drawLine(line);
+        }
+
+        start += levelPoints;
+    }
+}
+
 namespace Stream
 {
 }

@@ -4,5 +4,5 @@
 
 namespace Theory
 {
-    void create(unsigned int idxs[SampleComp::kNumPoints], unsigned char level);
+    void create(unsigned int idxs[9], unsigned char level);
 };

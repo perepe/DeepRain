@@ -23,7 +23,7 @@ void Pong::update(float dt)
 void Pong::draw(Allegro* allegro)
 {
     _ai.draw(allegro, false);
-    _dr.draw(allegro, true);
+    _dr.draw(allegro, false);
     _ball.draw(allegro);
 
     allegro->print(_field.min + V2(_field.width() * 0.5f, 20.0f), "%d - %d", _ai.getScore(), _dr.getScore());

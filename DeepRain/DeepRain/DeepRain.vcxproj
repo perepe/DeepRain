@@ -132,7 +132,6 @@
     <ClCompile Include="Source\Pong.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\Allegro.cpp" />
-    <ClCompile Include="Source\SampleComp.cpp" />
     <ClCompile Include="Source\StreamComp.cpp" />
     <ClCompile Include="Source\TheoryComp.cpp" />
     <ClCompile Include="Source\TheoryNodeComp.cpp" />
@@ -147,8 +146,6 @@
     <ClInclude Include="Source\Pong.h" />
     <ClInclude Include="Source\Allegro.h" />
     <ClInclude Include="Source\Rect.h" />
-    <ClInclude Include="Source\SampleComp.fwd.h" />
-    <ClInclude Include="Source\SampleComp.h" />
     <ClInclude Include="Source\StreamComp.fwd.h" />
     <ClInclude Include="Source\StreamComp.h" />
     <ClInclude Include="Source\TheoryComp.fwd.h" />

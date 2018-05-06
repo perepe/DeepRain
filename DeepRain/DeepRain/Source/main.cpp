@@ -32,9 +32,10 @@ int main(int argc, char** argv)
 
         exit = allegro.handleEvents();
         StreamComp::add();
-        pong.update(dt);
+        // pong.update(dt);
+        pong.update(0.01f);
 
-        // Sleep(128);
+        // Sleep(32);
 
         Allegro::startFrame();
         pong.draw(&allegro);

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Component.h"
-#include "SampleComp.fwd.h"
 
 struct TheoryComp
 {
@@ -14,5 +13,5 @@ struct TheoryComp
     unsigned int _numTests = 0;
     float _avgTotalError = 0.0f;
 
-    void update(unsigned int idxs[SampleComp::kNumPoints], int level);
+    void update(unsigned int idxs[9], int level);
 };
