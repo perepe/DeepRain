@@ -27,15 +27,32 @@ int main(int argc, char** argv)
     {
         lastT = t;
         t = clock() - startT;
-        float dt = (float)(t - lastT) / CLOCKS_PER_SEC;
-        printf("fps: %.3f, t: %.3f dt: %.3f\n", 1.0f / dt, (float)t, dt);
+		clock_t dt = t - lastT;
+        //float dt = (float)(t - lastT) / CLOCKS_PER_SEC;
+		constexpr clock_t kRate = CLOCKS_PER_SEC / 4;
+		clock_t remaining = kRate - dt;
+		//float remaining = kFrameRate - dt;
+		//assert(remaining >= 0.0f);
+
+
+		if (remaining > 0.0f)
+		{
+			Sleep(remaining);
+		}
+		else
+		{
+			//printf("extra: %.3f---------------------------------------------------\n", remaining / (float)CLOCKS_PER_SEC);
+			//assert(false);
+		}
+
+		t = clock() - startT;
+
+        //printf("fps: %.3f, t: %.0f dt: %.3f extra: %.3f\n", 1.0f / ((dt) / (float)CLOCKS_PER_SEC), (float)t, (t - lastT) / (float)CLOCKS_PER_SEC, remaining / (float)CLOCKS_PER_SEC);
 
         exit = allegro.handleEvents();
         StreamComp::add();
         // pong.update(dt);
-        pong.update(0.01f);
-
-        // Sleep(32);
+        pong.update(kRate / (float)CLOCKS_PER_SEC);
 
         Allegro::startFrame();
         pong.draw(&allegro);
