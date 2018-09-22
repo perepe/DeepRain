@@ -35,7 +35,7 @@ void Ball::update(const Rect& field, const V2& leftPaddlePos, const V2& rightPad
         onOut(leftOut);
     }
 
-    Drawer::getComponent<StreamComp>(_streamXH).add(_pos.x);
+    Drawer::getComponent<StreamComp>(_streamXH).add(dt);
     Drawer::getComponent<StreamComp>(_streamYH).add(_pos.y);
 }
 
