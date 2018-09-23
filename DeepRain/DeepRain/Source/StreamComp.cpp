@@ -44,27 +44,58 @@ void StreamComp::add(float value)
     }
 }
 
+void fillDerivative(float data[StreamComp::kStreamDataSize], float derivative[StreamComp::kStreamDataSize])
+{
+	const int kSamplesAvg = 200;
+	constexpr float scaleY = 325.949829f / kSamplesAvg;
+
+	for (int i = 0; i < StreamComp::kStreamDataSize; ++i)
+	{
+		derivative[i] = 0;
+
+		for (int j = 0; j < kSamplesAvg; ++j)
+		{
+			float factor = 2.0f * (kSamplesAvg - j) / kSamplesAvg - (1 / (float)kSamplesAvg);
+
+			int idx1 = (StreamComp::kStreamDataSize + i) % StreamComp::kStreamDataSize;
+			int idx2 = (StreamComp::kStreamDataSize + i - j - 1) % StreamComp::kStreamDataSize;
+			float val1 = data[idx1];
+			float val2 = data[idx2];
+			derivative[i] += (val1 - val2)*scaleY *factor / (j + 1);
+		}
+	}
+}
+
 void StreamComp::updateDerivative(unsigned int idx, unsigned char level, unsigned int levelStart, unsigned int levelPoints)
 {
     const unsigned int filledPoints = getLevelFilledPoints(level);
-	const float kFactor = 100.0f;
 
     if (filledPoints <= 1)
     {
         return;
     }
 
+	const unsigned int kMaxSamplesAvg = 50;
+	unsigned int samplesAvg = filledPoints >= kMaxSamplesAvg + 1 ? kMaxSamplesAvg : filledPoints - 1;
+	const float scaleY = 100.0f / samplesAvg;
+
     const unsigned char numDerivatives = kNumLevels - level - 1;
     const unsigned int levelIdx = idx - levelStart;
     unsigned int levelDerivativeNextPointIdx = levelIdx >> 1;
 	unsigned int timespan = getLevelPointTimespan(level);
 	timespan <<= 1;
+	unsigned int curIdx = idx;
+	float cur = _data[idx];
+	float val = 0.0f;
 
-    unsigned int curIdx = idx;
-    unsigned int prevIdx = levelStart + ((levelIdx + 1) % levelPoints);
-    float cur = _data[idx];
-    float prev = _data[prevIdx];
-	float val = kFactor*(cur - prev);// / (float)timespan;
+	for (unsigned int i = 0; i < samplesAvg; ++i)
+	{
+		unsigned int prevIdx = levelStart + ((levelIdx + 1 + i) % levelPoints);
+		float prev = _data[prevIdx];
+		val += scaleY*(cur - prev) / (i + 1);
+	}
+
+    
 
 	const unsigned int contributionIdx = _lastInv % timespan;
 	const bool isLastContributionToPoint = contributionIdx == timespan - 1;
@@ -74,26 +105,10 @@ void StreamComp::updateDerivative(unsigned int idx, unsigned char level, unsigne
 		return;
 	}
 
-	//_derivatives[levelStart + levelDerivativeNextPointIdx] = _data[idx] - _data[levelStart + ((levelIdx + 2) % levelPoints)];
 	_derivatives[levelStart + levelDerivativeNextPointIdx] = val;
-
-	if (strcmp(_name, "Ball X") == 0 && level == 1)
-	{
-		printf("[%d]%.2f\n", levelStart + levelDerivativeNextPointIdx, kFactor*val);
-
-		/*if (_derivatives[derivativeStart + levelDerivativeNextPointIdx] > 0.0f)
-		{
-		int a = 0;
-		a++;
-		}*/
-
-		// printf("v1: %.0f v2: %.0f d1: %.0f d1: %.0f d2: %.0f d21: %.0f i: %d\n", cur, prev, val, cura, preva, vala, contributionIdx);
-		//printf("i: %d v: %.2f\n", derivativeStart + levelDerivativeNextPointIdx, derivativeValue);
-	}
 
     unsigned int derivativeStart = levelStart;
 	unsigned int derivativePoints = levelPoints >> 1;
-	unsigned int factor = 1.0f;// 300.0f;
 
     for (unsigned int derivativeIdx = 1; derivativeIdx < numDerivatives; ++derivativeIdx)
     {
@@ -107,21 +122,17 @@ void StreamComp::updateDerivative(unsigned int idx, unsigned char level, unsigne
 			return;
 		}
 
-        unsigned int curIdxa = derivativeStart + levelDerivativeNextPointIdx;
-		//unsigned int prevIdxa = derivativeStart + ((levelDerivativeNextPointIdx + 2) % derivativePoints);
-		unsigned int prevIdxa = derivativeStart + ((levelDerivativeNextPointIdx + 1) % derivativePoints);
-        float cura = _derivatives[curIdxa];
-        float preva = _derivatives[prevIdxa];
-		float vala = kFactor*(cura - preva);// / (float)timespan;
-		factor += 0;
+		unsigned int samplesAvg = derivativePoints >= kMaxSamplesAvg + 1 ? kMaxSamplesAvg : derivativePoints - 1;
+		unsigned int curIdxa = derivativeStart + levelDerivativeNextPointIdx;
+		float cura = _derivatives[curIdxa];
+		float vala = 0.0f;
 
-        //const unsigned int lt = getLevelPointTimespan(level) << (derivativeIdx + 1);
-        //const unsigned int m = _lastInv % lt;
-
-        // const unsigned int contributionIdx = _lastInv % getDerivativePointTimespan(level, derivativeIdx);
-        //const unsigned int contributionIdx = (_lastInv % (getLevelPointTimespan(level) << (derivativeIdx + 1)));
-
-        //float derivativeValue = _derivatives[derivativeStart + levelDerivativeNextPointIdx] - _derivatives[derivativeStart + ((levelDerivativeNextPointIdx + 2) % derivativePoints)];
+		for (unsigned int i = 0; i < samplesAvg; ++i)
+		{
+			unsigned int prevIdxa = derivativeStart + ((levelDerivativeNextPointIdx + 1 + i) % derivativePoints);
+			float preva = _derivatives[prevIdxa];
+			vala += scaleY*(cura - preva) / (i + 1);
+		}
 
         derivativeStart += derivativePoints;
         derivativePoints >>= 1;
@@ -129,28 +140,14 @@ void StreamComp::updateDerivative(unsigned int idx, unsigned char level, unsigne
         levelDerivativeNextPointIdx >>= 1; // = levelIdx >> (derivativeIdx + 1);
 
         _derivatives[derivativeStart + levelDerivativeNextPointIdx] = vala;
-
-		if (strcmp(_name, "Ball X") == 0 && level == 1 && derivativeIdx == 1)
-		{
-			printf("            [%d]%.2f = [%d]%.2f - [%d]%.2f\n", derivativeStart + levelDerivativeNextPointIdx, kFactor*vala, curIdxa, kFactor*cura, prevIdxa, kFactor*preva);
-
-			/*if (_derivatives[derivativeStart + levelDerivativeNextPointIdx] > 0.0f)
-			{
-			int a = 0;
-			a++;
-			}*/
-
-			// printf("v1: %.0f v2: %.0f d1: %.0f d1: %.0f d2: %.0f d21: %.0f i: %d\n", cur, prev, val, cura, preva, vala, contributionIdx);
-			//printf("i: %d v: %.2f\n", derivativeStart + levelDerivativeNextPointIdx, derivativeValue);
-		}
-
     }
 }
 
 void StreamComp::draw(Allegro* allegro) const
 {
-    //drawRawData(allegro);
-    drawSin(allegro);
+	//drawRawData(allegro);
+	drawRawDerivative(allegro);
+    //drawSin(allegro);
     return;
 
     allegro->print(_renderArea.min + V2(50.0f, 20.0f), "%s:", _name);
@@ -264,36 +261,6 @@ void drawArray(Allegro* allegro, Rect renderArea, float data[StreamComp::kStream
 		line.end.y = centerY + data[i + 1];
 
 		Allegro::drawLine(line);
-	}
-}
-
-void fillDerivative(float data[StreamComp::kStreamDataSize], float derivative[StreamComp::kStreamDataSize])
-{
-	const int kSamplesAvg = 200;
-	constexpr float scaleY = 325.949829f / kSamplesAvg;
-
-	for (int i = 0; i < StreamComp::kStreamDataSize; ++i)
-	{
-		derivative[i] = 0;
-		//float avg = 0;
-
-		for (int j = 0; j < kSamplesAvg; ++j)
-		{
-			//float factor = (kSamplesAvg - j)/(kSamplesAvg*0.5f +kSamplesAvg*kSamplesAvg*0.5f);
-			float factor = 2.0f * (kSamplesAvg - j) / kSamplesAvg - (1 / (float)kSamplesAvg);
-			//float factor = 1.0f;
-			//float x = (kSamplesAvg - j) / kSamplesAvg;// -(1 / (float)kSamplesAvg);
-			//float factor = kSamplesAvg*x*x;
-			//avg += factor;
-
-			int idx1 = (StreamComp::kStreamDataSize + i ) % StreamComp::kStreamDataSize;
-			int idx2 = (StreamComp::kStreamDataSize + i - j - 1) % StreamComp::kStreamDataSize;
-			float val1 = data[idx1];
-			float val2 = data[idx2];
-			derivative[i] += (val1 - val2)*scaleY *factor/(j+1);
-		}
-		//avg /= (float)kSamplesAvg;
-		//avg += 0;
 	}
 }
 
