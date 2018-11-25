@@ -84,6 +84,4 @@ struct StreamComp
     void draw(Allegro* allegro) const;
     void drawRawData(Allegro* allegro) const;
 	void drawRawDerivative(Allegro* allegro) const;
-	void drawSin(Allegro* allegro) const;
-    void drawDerivative(Allegro* allegro) const;
 };
