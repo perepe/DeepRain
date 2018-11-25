@@ -28,7 +28,7 @@ void StreamComp::add(float value)
         const unsigned int levelPoints = getLevelPoints(level);
         const unsigned int levelNextPointIdx = getLevelNextPointIdx(level, levelStartPoint);
         const unsigned int pointTimespan = getLevelPointTimespan(level);
-        const float valueContributionToPoint = 100.0f*sin(0.2f * _t) / (double)pointTimespan;
+        const float valueContributionToPoint = 100.0f*sin(_t) / (double)pointTimespan;
         const unsigned int contributionIdx = _lastInv % pointTimespan;
         const bool isFirstContributionToPoint = contributionIdx == 0;
         const bool isLastContributionToPoint = contributionIdx == pointTimespan - 1;
@@ -37,7 +37,7 @@ void StreamComp::add(float value)
 
         if (isLastContributionToPoint)
         {
-            updateDerivative(levelNextPointIdx, level, levelStartPoint, levelPoints);
+            updateDerivative(levelNextPointIdx, level, levelStartPoint, levelPoints, value);
         }
 
         levelStartPoint += levelPoints;
@@ -66,7 +66,7 @@ void fillDerivative(float data[StreamComp::kStreamDataSize], float derivative[St
 	}
 }
 
-void StreamComp::updateDerivative(unsigned int idx, unsigned char level, unsigned int levelStart, unsigned int levelPoints)
+void StreamComp::updateDerivative(unsigned int idx, unsigned char level, unsigned int levelStart, unsigned int levelPoints, float dt)
 {
     const unsigned int filledPoints = getLevelFilledPoints(level);
 
@@ -75,9 +75,9 @@ void StreamComp::updateDerivative(unsigned int idx, unsigned char level, unsigne
         return;
     }
 
-	const unsigned int kMaxSamplesAvg = 50;
+	const unsigned int kMaxSamplesAvg = 1;
 	unsigned int samplesAvg = filledPoints >= kMaxSamplesAvg + 1 ? kMaxSamplesAvg : filledPoints - 1;
-	const float scaleY = 100.0f / samplesAvg;
+	const float scaleY = 1.0f / samplesAvg;
 
     const unsigned char numDerivatives = kNumLevels - level - 1;
     const unsigned int levelIdx = idx - levelStart;
@@ -105,7 +105,7 @@ void StreamComp::updateDerivative(unsigned int idx, unsigned char level, unsigne
 		return;
 	}
 
-	_derivatives[levelStart + levelDerivativeNextPointIdx] = val;
+	_derivatives[levelStart + levelDerivativeNextPointIdx] = val/(float)(dt*timespan);
 
     unsigned int derivativeStart = levelStart;
 	unsigned int derivativePoints = levelPoints >> 1;
@@ -131,7 +131,7 @@ void StreamComp::updateDerivative(unsigned int idx, unsigned char level, unsigne
 		{
 			unsigned int prevIdxa = derivativeStart + ((levelDerivativeNextPointIdx + 1 + i) % derivativePoints);
 			float preva = _derivatives[prevIdxa];
-			vala += scaleY*(cura - preva) / (i + 1);
+			vala += scaleY*(cura - preva) / (float)((i + 1));
 		}
 
         derivativeStart += derivativePoints;
@@ -139,7 +139,7 @@ void StreamComp::updateDerivative(unsigned int idx, unsigned char level, unsigne
 
         levelDerivativeNextPointIdx >>= 1; // = levelIdx >> (derivativeIdx + 1);
 
-        _derivatives[derivativeStart + levelDerivativeNextPointIdx] = vala;
+        _derivatives[derivativeStart + levelDerivativeNextPointIdx] = vala/(dt*timespan*0.5f);
     }
 }
 

@@ -10,7 +10,7 @@ struct StreamComp
 {
     static constexpr unsigned int maxSize = 1000;
 
-    static constexpr unsigned char kNumLevels = 12;
+    static constexpr unsigned char kNumLevels = 16;
     static constexpr unsigned int kStreamDataSize = 1 << (kNumLevels - 1);
     static constexpr unsigned int kFirstLevelSize = kStreamDataSize >> 1;
     static constexpr unsigned int kFirstLevelFirstDerivativeSize = kFirstLevelSize >> 1;
@@ -80,7 +80,7 @@ struct StreamComp
     static void add();
 
     void add(float value);
-    void updateDerivative(unsigned int idx, unsigned char level, unsigned int levelStart, unsigned int levelPoints);
+    void updateDerivative(unsigned int idx, unsigned char level, unsigned int levelStart, unsigned int levelPoints, float dt);
     void draw(Allegro* allegro) const;
     void drawRawData(Allegro* allegro) const;
 	void drawRawDerivative(Allegro* allegro) const;

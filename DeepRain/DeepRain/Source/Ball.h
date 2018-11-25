@@ -37,8 +37,8 @@ class Ball
         bool ok = Drawer::addComponent<StreamComp>(_streamXH);
         ok &= Drawer::addComponent<StreamComp>(_streamYH);
         assert(ok);
-        Drawer::getComponent<StreamComp>(_streamXH).init("Ball X", Rect(V2(0.0f, 0.0f), V2(800.0f, 300.0f)));
-        Drawer::getComponent<StreamComp>(_streamYH).init("Ball Y", Rect(V2(0.0f, 100.0f), V2(800.0f, 200.0f)));
+        Drawer::getComponent<StreamComp>(_streamXH).init("Ball X", Rect(V2(0.0f, 0.0f), V2(1800.0f, 300.0f)));
+        Drawer::getComponent<StreamComp>(_streamYH).init("Ball Y", Rect(V2(0.0f, 100.0f), V2(1800.0f, 200.0f)));
     };
 
     void update(const Rect& field, const V2& leftPaddlePos, const V2& rightPaddlePos, Paddle::Action leftAction, Paddle::Action rightAction, float dt);

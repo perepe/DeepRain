@@ -7,9 +7,9 @@
 
 int main(int argc, char** argv)
 {
-    constexpr c_V2 screenSize{800.0f, 600.0f};
+    constexpr c_V2 screenSize{1800.0f, 600.0f};
     constexpr c_V2 fieldCenter{screenSize.x * 0.5f, screenSize.y * 0.75f};
-    constexpr c_V2 fieldSize{400.0f, 300.0f};
+    constexpr c_V2 fieldSize{900.0f, 300.0f};
 
     Allegro allegro;
     bool exit = !allegro.init(screenSize);
